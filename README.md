@@ -8,7 +8,7 @@ Create a directory where you want to manage your dartnow gists, for example:
 
 `mkdir ~/dartnow_gists && cd ~/dartnow_gists`
 
-Now run `darnow init`. You will be asked your github username. And you need to create a github token. See this doc:
+Now run `dartnow init`. You will be asked your github username. And you need to create a github token. See this doc:
 
 https://help.github.com/articles/creating-an-access-token-for-command-line-use/
 
