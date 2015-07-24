@@ -42,7 +42,7 @@ tags: json pretty-print
 If the main library contains an underscore, you use then double underscore to seperate the main library, from the element. For example:
 
 ```
-name: route_hierachal__Router
+name: route_hierarchical__Router
 ```
 
 If you want to use a creative pubspec name, you can also specify the metadata in this way:
