@@ -18,7 +18,7 @@ void main(List<String> arguments) {
 
 class UpdateCommand extends Command {
   final name = "update";
-  final description = "Update info from gist to userbase, and update user info";
+  final description = "Update info from gist to firebase, and update user info";
 
   DartNowAdmin dartnow;
 
