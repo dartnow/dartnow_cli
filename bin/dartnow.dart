@@ -12,6 +12,7 @@ void main(List<String> arguments) {
     ..addCommand(new PushCommand())
     ..addCommand(new AddCommand())
     ..addCommand(new UpdateGistCommand())
+    ..addCommand(new CloneCommand())
     ..addCommand(new ResetCommand());
 
   runner.run(arguments);
@@ -68,6 +69,26 @@ class CreateCommand extends Command {
     await dartnow.add(id);
 
     DartNow.resetPlayground();
+    await dartnow.cloneGist(id);
+    exit(0);
+  }
+}
+
+/// Create a new gist from playground dir.
+class CloneCommand extends Command {
+  final name = "clone";
+  final description =
+  "Clone a gist from github. Specify the id.";
+
+  DartNow dartnow;
+
+  String get id => argResults.rest[0];
+
+
+  CloneCommand();
+
+  run() async {
+    dartnow = new DartNow();
     await dartnow.cloneGist(id);
     exit(0);
   }

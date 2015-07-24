@@ -109,7 +109,10 @@ Token:''', secret: true));
   Future<Gist> cloneGist(String id) async {
     Gist gist = await getGist(id);
     DartSnippet snippet = new DartSnippet.fromGist(gist);
-    String outputDir = 'my_gists/${snippet.name}';
+    String outputDir = 'other_gists/${snippet.name}';
+    if (gist.owner.login == username) {
+      outputDir = 'my_gists/${snippet.name}';
+    }
     // clone the gist to the outputdir
     Process.runSync('git', ['clone', snippet.gistUrl, outputDir]);
     Process.runSync('pub', ['get'], workingDirectory: outputDir);
