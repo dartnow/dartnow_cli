@@ -36,7 +36,7 @@ description: |
   How to pretty-print JSON using Dart.
 
   How to display JSON in an easy-to-read (for human readers) format.
-tags: 'json pretty-print'
+tags: json pretty-print
 ```
 
 If the main library contains an underscore, you use then double underscore to seperate the main library, from the element. For example:
