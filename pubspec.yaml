@@ -1,6 +1,6 @@
 name: dartnow
 description: Dart Now command line interface
-version: 0.1.9
+version: 0.1.11
 author: Kasper Peulen <kasperpeulen@gmail.com>
 homepage: https://github.com/dartnow/dartnow_cli
 environment:
@@ -20,3 +20,5 @@ dependencies:
   analyzer: any
   test: '^0.12.3+8'
   http: '^0.11.3'
+  md_proc: '^0.5.1'
+  grinder: '^0.7.2'

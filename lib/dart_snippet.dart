@@ -3,6 +3,7 @@ library dartnow.dart_snippet;
 import 'package:github/server.dart';
 import 'package:dartnow/pubspec.dart';
 import 'package:dartnow/analyzer_util.dart';
+import "package:md_proc/md_proc.dart";
 
 class DartSnippet {
   Gist _gist;
@@ -14,10 +15,10 @@ class DartSnippet {
   String get shortDescription {
     if (description == null ||
         description.isEmpty) return '${mainLibrary} example';
-    if (description.indexOf('\n') == -1) {
+    if (description.indexOf('\n\n') == -1) {
       return description;
     } else {
-      return description.substring(0, description.indexOf('\n'));
+      return description.substring(0, description.indexOf('\n\n'));
     }
   }
   String get mainLibrary => _pubspec.mainLibrary;
@@ -43,12 +44,14 @@ class DartSnippet {
   DartSnippet.fromGist(this._gist);
 
   Map toJson() {
+    print(description);
     return {
       'name': _pubspec.name,
       'author': _gist.owner.login,
       'createdAt': _gist.createdAt.toIso8601String(),
       'updatedAt': _gist.updatedAt.toIso8601String(),
-      'description': _pubspec.description,
+      'description':  markdownToHtml(_pubspec.description),
+      'shortDescription': markdownToHtml(shortDescription),
       'mainLibrary': _pubspec.mainLibrary,
       'mainElements': _pubspec.mainElements,
       'tags': _pubspec.tags,
@@ -108,7 +111,7 @@ class DartSnippet {
   String get _newReadmeString => '''
 #${mainLibrary} example
 
-${description}
+${_pubspec.description}
 
 **Main library:** ${mainLibrary}<br>
 **Main element${mainElements.contains(' ') ? 's' : ''}:** ${mainElements}<br>
@@ -120,6 +123,6 @@ ${tags.length == 0 ? "" : '**Tags:** ${_tagsWithHashTag}<br>'}
       tags.trim().split(' ').map((t) => '#$t').join(' ');
 
   bool get _displayDartPadLink {
-    return libraries.every((l) => l.startsWith('dart'));
+    return libraries.every((l) => l.startsWith('dart:'));
   }
 }

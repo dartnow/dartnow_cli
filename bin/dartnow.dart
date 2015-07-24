@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:args/command_runner.dart';
 import 'package:dartnow/dartnow.dart';
 import 'package:github/server.dart';
+import 'package:grinder/grinder.dart' as grind;
 
 CommandRunner runner;
 
@@ -13,6 +14,7 @@ void main(List<String> arguments) {
     ..addCommand(new AddCommand())
     ..addCommand(new UpdateGistCommand())
     ..addCommand(new CloneCommand())
+    ..addCommand(new InstallCommand())
     ..addCommand(new ResetCommand());
 
   runner.run(arguments);
@@ -139,5 +141,37 @@ class ResetCommand extends Command {
   run() async {
     await DartNow.resetPlayground();
     exit(0);
+  }
+}
+
+class InstallCommand extends Command {
+  final name = "install";
+  final description = "Install a library to the gist.";
+
+  String get package => argResults.rest[0].split(':')[0];
+
+  String get library => argResults.rest[0].split(':')[1];
+
+  InstallCommand();
+
+  void run() {
+    if (package != 'dart') {
+      grind.run('pub', arguments: 'global run den install $package'.split(' '));
+      grind.run('pub', arguments: 'get'.split(' '));
+    }
+    addLibray();
+    String printMessage = package == 'dart'
+    ? 'Added $package:$library to main.dart'
+    : 'Added package:$package/$library.dart to main.dart';
+    print(printMessage);
+  }
+
+  void addLibray() {
+    File mainFile = new File('main.dart');
+    String mainFileString = mainFile.readAsStringSync();
+    String importString = package == 'dart'
+    ? "import '$package:$library';"
+    : "import 'package:$package/$library.dart';";
+    mainFile.writeAsStringSync('$importString\n$mainFileString');
   }
 }

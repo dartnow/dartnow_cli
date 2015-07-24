@@ -9,6 +9,7 @@ void main(List<String> arguments) {
 
     ..addCommand(new UpdateCommand())
     ..addCommand(new UpdateNew())
+    ..addCommand(new UpdateAll())
     ..addCommand(new DeleteGistCommand())
     ..addCommand(new UpdateUserCommand())
   ;
@@ -50,6 +51,22 @@ class UpdateNew extends Command {
     exit(0);
   }
 }
+
+class UpdateAll extends Command {
+  final name = "update_all";
+  final description = "Fetch all gists, and update them";
+
+  DartNowAdmin dartnow;
+
+  UpdateAll();
+
+  run() async {
+    dartnow = new DartNowAdmin();
+    await dartnow.updateAll();
+    exit(0);
+  }
+}
+
 
 
 class DeleteGistCommand extends Command {

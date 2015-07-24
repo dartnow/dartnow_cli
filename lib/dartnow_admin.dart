@@ -23,6 +23,14 @@ class DartNowAdmin extends DartNow {
     return newIds;
   }
 
+  updateAll() async {
+    Response response = await get('https://dartnow.firebaseio.com/gists.json');
+    List<String> allIds = JSON.decode(response.body).keys.toList();
+    for(String id in allIds) {
+      await update(id);
+    }
+  }
+
   updateNew() async {
     Map<String, String> newIds = await fetchNew();
     if (newIds == null || newIds.isEmpty) {
