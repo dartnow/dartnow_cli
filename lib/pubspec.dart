@@ -27,12 +27,14 @@ class PubSpec {
   dependencies = yaml['dependencies'],
   _tags = yaml['tags'],
   _mainElements = yaml['main_elements'],
-  _mainLibrary = yaml['main_library'].replaceAll('.', ':') {
+  _mainLibrary = yaml['main_library'] {
     if (name == null || name.isEmpty) {
       throw 'Please specify a name in your pubspec.';
     }
     if (_mainLibrary == null) {
       _mainLibrary = name.substring(0, _libraryEndIndex).replaceAll('.', ':');
+    } else {
+      _mainLibrary = mainLibrary.replaceAll('.', ':');
     }
     if (_mainElements == null || _tags == null) {
       _findElementAndTags();
