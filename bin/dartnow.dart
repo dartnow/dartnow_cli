@@ -68,7 +68,7 @@ class CreateCommand extends Command {
     String id = gist.id;
     await dartnow.add(id);
 
-    DartNow.resetPlayground();
+    await DartNow.resetPlayground();
     await dartnow.cloneGist(id);
     exit(0);
   }
@@ -137,7 +137,7 @@ class ResetCommand extends Command {
   ResetCommand();
 
   run() async {
-    DartNow.resetPlayground();
+    await DartNow.resetPlayground();
     exit(0);
   }
 }

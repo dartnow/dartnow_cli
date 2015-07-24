@@ -66,7 +66,7 @@ Token:''', secret: true));
     print('"playground" dir has been created.');
   }
 
-  static resetPlayground() {
+  static resetPlayground() async {
     new Directory('playground').deleteSync(recursive:true);
     new Future.delayed((new Duration(milliseconds:100)), () {
       _createPlayground();
@@ -108,7 +108,7 @@ Token:''', secret: true));
 
   }
 
-  Future<Gist> cloneGist(String id) async {
+  cloneGist(String id) async {
     Gist gist = await getGist(id);
     DartSnippet snippet = new DartSnippet.fromGist(gist);
     String outputDir = 'other_gists/${snippet.name}';
@@ -117,9 +117,10 @@ Token:''', secret: true));
     }
     // clone the gist to the outputdir
     Process.runSync('git', ['clone', snippet.gistUrl, outputDir]);
-    Process.runSync('pub', ['get'], workingDirectory: outputDir);
-    print('Gist cloned in $outputDir');
-    return gist;
+    return new Future (() {
+      Process.runSync('pub', ['get'], workingDirectory: outputDir);
+      print('Gist cloned in $outputDir');
+    });
   }
 
 
