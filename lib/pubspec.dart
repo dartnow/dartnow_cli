@@ -27,7 +27,7 @@ class PubSpec {
   dependencies = yaml['dependencies'],
   _tags = yaml['tags'],
   _mainElements = yaml['main_elements'],
-  _mainLibrary = yaml['main_library'] {
+  _mainLibrary = yaml['main_library'].replaceAll('.', ':') {
     if (name == null || name.isEmpty) {
       throw 'Please specify a name in your pubspec.';
     }
