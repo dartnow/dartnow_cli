@@ -68,8 +68,10 @@ Token:''', secret: true));
 
   static resetPlayground() {
     new Directory('playground').deleteSync(recursive:true);
-    _createPlayground();
-    print('"playground" dir has been reset.');
+    new Future.delayed((new Duration(milliseconds:100)), () {
+      _createPlayground();
+      print('"playground" dir has been reset.');
+    });
   }
 
 
@@ -156,7 +158,7 @@ Token:''', secret: true));
     return files;
   }
 
-  static _createPlayground() {
+  static  _createPlayground() {
     new Directory('playground').createSync();
 
     new File('playground/pubspec.yaml').writeAsStringSync('''
