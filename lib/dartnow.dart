@@ -67,8 +67,9 @@ Token:''', secret: true));
   }
 
   static resetPlayground() async {
-    new Directory('playground').deleteSync(recursive:true);
-    new Future.delayed((new Duration(milliseconds:100)), () {
+    if (new Directory('playground').existsSync())
+      new Directory('playground').deleteSync(recursive:true);
+    return new Future.delayed((new Duration(milliseconds:100)), () {
       _createPlayground();
       print('"playground" dir has been reset.');
     });

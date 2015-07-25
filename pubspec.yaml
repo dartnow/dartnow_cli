@@ -1,6 +1,6 @@
 name: dartnow
 description: Dart Now command line interface
-version: 0.1.11
+version: 0.1.12
 author: Kasper Peulen <kasperpeulen@gmail.com>
 homepage: https://github.com/dartnow/dartnow_cli
 environment:
