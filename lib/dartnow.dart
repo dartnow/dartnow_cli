@@ -16,8 +16,8 @@ class DartNow {
   static createTemplateFiles() {
     files = {
       'pubspec.yaml': pubspecStringTemplate,
-      'web/main.dart': dartStringTemplate,
-      'web/index.html': htmlStringTemplate
+      'main.dart': dartStringTemplate,
+      'index.html': htmlStringTemplate
     };
   }
 

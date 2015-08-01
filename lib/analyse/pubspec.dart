@@ -44,7 +44,7 @@ class PubSpec {
     }
   }
 
-  String get id => homepage?.substring(homepage.lastIndexOf('/') + 1);
+  String get id => homepage == null ? null : homepage.substring(homepage.lastIndexOf('/') + 1);
 
   int get _libraryEndIndex {
     if (name.contains('__')) {
@@ -81,7 +81,11 @@ class PubSpec {
       }
     }
 
-    _mainElements ??= newElements.trim();
-    _tags ??= newTags.trim();
+    if (_mainElements == null) {
+      _mainElements = newElements.trim();
+    }
+    if (_tags == null) {
+      _tags = newTags.trim();
+    }
   }
 }
