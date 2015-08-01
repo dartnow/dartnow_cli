@@ -1,13 +1,12 @@
 library dartnow.dart_snippet;
 
 import 'package:github/server.dart';
-import 'package:dartnow/pubspec.dart';
-import 'package:dartnow/analyzer_util.dart';
+import 'package:dartnow/analyse/pubspec.dart';
+import 'package:dartnow/analyse/analyzer_util.dart';
 import "package:md_proc/md_proc.dart";
 
 class DartSnippet {
   Gist _gist;
-  Map _config;
 
   PubSpec get _pubspec => new PubSpec.fromString(pubspecString);
   String get name => _pubspec.name;
@@ -37,7 +36,7 @@ class DartSnippet {
   String get htmlString => _fileString('index.html');
   String get dartString => _fileString('main.dart');
   String get cssString => _fileString('styles.css');
-  String get oldReadmeString => _fileString('README.md');
+  String get _oldReadmeString => _fileString('README.md');
 
   List<String> get libraries => new AnalyzerUtil().findLibraries(dartString);
 
@@ -46,15 +45,15 @@ class DartSnippet {
   Map toJson() {
     print(description);
     return {
-      'name': _pubspec.name,
-      'author': _gist.owner.login,
-      'createdAt': _gist.createdAt.toIso8601String(),
-      'updatedAt': _gist.updatedAt.toIso8601String(),
-      'description':  markdownToHtml(_pubspec.description),
+      'name': name,
+      'author': author,
+      'createdAt': createdAt,
+      'updatedAt': updatedAt,
+      'description': markdownToHtml(description),
       'shortDescription': markdownToHtml(shortDescription),
-      'mainLibrary': _pubspec.mainLibrary,
-      'mainElements': _pubspec.mainElements,
-      'tags': _pubspec.tags,
+      'mainLibrary': mainLibrary,
+      'mainElements': mainElements,
+      'tags': tags,
       'files': {
         'pubspec': pubspecString,
         'html': htmlString,
@@ -69,16 +68,7 @@ class DartSnippet {
     };
   }
 
-  updateGist(GitHub gitHub) async {
-    Map files = {}..addAll(_updatePubSpec())..addAll(_updateReadme());
-    if (_gist.description != shortDescription) {
-      print('Description updated to "${shortDescription}" ');
-    }
-    await gitHub.gists.editGist(id,
-        description: shortDescription, files: files);
-  }
-
-  Map<String, String> _updatePubSpec() {
+  String updatePubSpec(String pubspecString) {
     List<String> pubSpecAsList = pubspecString.split('\n');
     // check if homepage is already inserted
     if (pubSpecAsList.every((s) => !s.startsWith('homepage'))) {
@@ -86,19 +76,11 @@ class DartSnippet {
           pubSpecAsList.firstWhere((s) => s.startsWith('environment:')));
       pubSpecAsList.insert(environmentIndex, 'homepage: ${gistUrl}');
       print('Pubspec homepage inserted ($gistUrl)');
-      return {'pubspec.yaml': pubSpecAsList.join('\n')};
     }
-    return {};
+    return pubSpecAsList.join('\n');
   }
 
-  Map<String, String> _updateReadme() {
-    if (oldReadmeString != _newReadmeString) {
-      print('Readme updated');
-      return {'README.md': _newReadmeString};
-    } else {
-      return {};
-    }
-  }
+  String updateReadme() => _newReadmeString;
 
   String _fileString(String fileName) {
     if (_gistFiles.any((file) => file.name == fileName)) {
@@ -111,7 +93,7 @@ class DartSnippet {
   String get _newReadmeString => '''
 #${mainLibrary} example
 
-${_pubspec.description}
+${description}
 
 **Main library:** ${mainLibrary}<br>
 **Main element${mainElements.contains(' ') ? 's' : ''}:** ${mainElements}<br>

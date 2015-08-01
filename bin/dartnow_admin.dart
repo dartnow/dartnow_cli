@@ -1,20 +1,17 @@
 import 'dart:io';
-import 'package:args/command_runner.dart';
-import 'package:dartnow/dartnow_admin.dart';
 
-CommandRunner runner;
+import 'package:args/command_runner.dart';
+
+import 'package:dartnow/dartnow.dart';
 
 void main(List<String> arguments) {
-  runner = new CommandRunner("dartnow_admin", "DartNow admin manager.")
-
+  new CommandRunner("dartnow_admin", "DartNow admin manager.")
     ..addCommand(new UpdateCommand())
     ..addCommand(new UpdateNew())
     ..addCommand(new UpdateAll())
     ..addCommand(new DeleteGistCommand())
     ..addCommand(new UpdateUserCommand())
-  ;
-
-  runner.run(arguments);
+    ..run(arguments);
 }
 
 class UpdateCommand extends Command {
