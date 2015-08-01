@@ -1,4 +1,4 @@
-#dartnow cli
+#dartnow cli - OUTDATED, DOCS WILL BE UPDATED
 
 To activate the package:
 
