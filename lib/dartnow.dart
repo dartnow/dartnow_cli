@@ -35,8 +35,9 @@ class DartNow {
   static Map<String, String> get files {
     List<FileSystemEntity> allFiles = new Directory('web').listSync();
     allFiles.add(new File('pubspec.yaml'));
-    allFiles.add(new File('README.md'));
-
+    if (new File('README.md').existsSync()) {
+      allFiles.add(new File('README.md'));
+    }
     allFiles.removeWhere((file) => file is Directory);
 
     Map<String, String> files = new Map.fromIterable(allFiles,
@@ -96,12 +97,14 @@ class DartNow {
     DartSnippet snippet = new DartSnippet.fromGist(gist);
     Map<String, String> gistFiles = files;
     gistFiles['pubspec.yaml'] = snippet.updatePubSpec(files['pubspec.yaml']);
+
     await gitHub.gists.editGist(id,
         description: snippet.shortDescription, files: gistFiles);
 
     gist = await getGist(id);
     snippet = new DartSnippet.fromGist(gist);
     gistFiles = files;
+    gistFiles['pubspec.yaml'] = snippet.updatePubSpec(files['pubspec.yaml']);
     gistFiles['README.md'] = snippet.updateReadme();
 
     await gitHub.gists.editGist(id,
